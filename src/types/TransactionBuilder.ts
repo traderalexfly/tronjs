@@ -7,6 +7,21 @@ export interface PermissionId {
     permissionId?: number;
 }
 
+export interface BlockHeader {
+    ref_block_bytes: string;
+    ref_block_hash: string;
+    expiration: number;
+    timestamp: number;
+}
+
+export interface TransactionCommonOptions {
+    /**
+     * Permission id for multi-sign.
+     */
+    permissionId?: number;
+    blockHeader?: BlockHeader;
+}
+
 export type NumberLike = string | number;
 
 export type Resource = 'BANDWIDTH' | 'ENERGY';
@@ -78,6 +93,7 @@ export interface CreateSmartContractOptions {
      * Required if `funcABIV2` exists.
      */
     parametersV2?: unknown[];
+    blockHeader?: BlockHeader;
 }
 
 export interface TriggerSmartContractOptions {
@@ -133,6 +149,7 @@ export interface TriggerSmartContractOptions {
      * Optional.
      */
     permissionId?: number;
+    blockHeader?: BlockHeader;
     _isConstant?: boolean;
     /**
      * If use solidity node to trigger smart contract.
@@ -227,9 +244,10 @@ export interface CreateTokenOptions {
      * Optional, for multi-signature use.
      */
     permissionId?: number;
+    blockHeader?: BlockHeader;
 }
 
-export interface UpdateTokenOptions extends PermissionId {
+export interface UpdateTokenOptions {
     /**
      * The description of token.
      * Optional.
@@ -249,6 +267,11 @@ export interface UpdateTokenOptions extends PermissionId {
      * Optional. Default is 0.
      */
     freeBandwidthLimit?: number;
+    /**
+     * Optional, for multi-signature use.
+     */
+    permissionId?: number;
+    blockHeader?: BlockHeader;
 }
 
 export interface DeployConstantContractOptions {
