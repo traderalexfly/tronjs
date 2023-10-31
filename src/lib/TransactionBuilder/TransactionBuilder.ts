@@ -43,6 +43,7 @@ import {
     TxLocal,
     UpdateTokenOptions,
     VoteInfo,
+    BlockHeader,
 } from '../../types/TransactionBuilder';
 import { Address } from '../../types/Trx.js';
 import { ConstructorFragment, ContractAbiInterface, FunctionFragment } from '../../types/ABI.js';
@@ -889,7 +890,7 @@ export class TransactionBuilder {
         }
         const tx = (await createTransaction(this.tronWeb, ContractType.CreateSmartContract, contract, options.permissionId, {
             fee_limit: args.fee_limit,
-            ...(options.blockHeader || {}),
+            ...(options.blockHeader || ({} as BlockHeader)),
         })) as CreateSmartContractTransaction;
         tx.contract_address = genContractAddress(args.owner_address, tx.txID);
         return tx;
@@ -1211,7 +1212,7 @@ export class TransactionBuilder {
             options.permissionId,
             {
                 fee_limit: args.fee_limit,
-                ...(options.blockHeader || {}),
+                ...(options.blockHeader || ({} as BlockHeader)),
             }
         );
         return {
@@ -2280,8 +2281,8 @@ export class TransactionBuilder {
                     contract.parameter.value,
                     contract.Permission_id,
                     {
-                        fee_limit: transaction.raw_data.fee_limit,
-                        data: transaction.raw_data.data,
+                        fee_limit: transaction.raw_data.fee_limit as number,
+                        data: transaction.raw_data.data as string,
                         ref_block_bytes: transaction.raw_data.ref_block_bytes,
                         ref_block_hash: transaction.raw_data.ref_block_hash,
                         expiration: transaction.raw_data.expiration,

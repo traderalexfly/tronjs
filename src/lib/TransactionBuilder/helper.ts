@@ -5,7 +5,7 @@ import { keccak256 } from '../../utils/ethersUtils.js';
 import { BlockWithoutDetail } from '../../types/APIResponse.js';
 import HttpProvider from '../providers/HttpProvider.js';
 import { ContractParamter, ContractType } from '../../types/Contract.js';
-import { TriggerConstantContractOptions } from '../../types/TransactionBuilder.js';
+import { BlockHeader, TriggerConstantContractOptions } from '../../types/TransactionBuilder.js';
 
 export function fromUtf8(value: string) {
     return TronWeb.fromUtf8(value).replace(/^0x/, '');
@@ -74,9 +74,9 @@ export async function createTransaction(
     type: ContractType,
     value: ContractParamter,
     Permission_id?: number,
-    options = {}
+    options?: BlockHeader
 ): Promise<Transaction> {
-    const metaData = await getHeaderInfo(tronWeb.fullNode);
+    const blockHeader = options || (await getHeaderInfo(tronWeb.fullNode));
     const tx: Transaction = {
         visible: false,
         txID: '',
@@ -91,8 +91,7 @@ export async function createTransaction(
                     type,
                 },
             ],
-            ...metaData,
-            ...options,
+            ...blockHeader,
         },
     };
     if (Permission_id) {
