@@ -26,6 +26,7 @@ import {
     deepCopyJson,
     fromUtf8,
     genContractAddress,
+    getHeaderInfo,
     resultManager,
     resultManagerTriggerSmartContract,
 } from './helper.js';
@@ -43,7 +44,6 @@ import {
     TxLocal,
     UpdateTokenOptions,
     VoteInfo,
-    BlockHeader,
 } from '../../types/TransactionBuilder';
 import { Address } from '../../types/Trx.js';
 import { ConstructorFragment, ContractAbiInterface, FunctionFragment } from '../../types/ABI.js';
@@ -890,7 +890,7 @@ export class TransactionBuilder {
         }
         const tx = (await createTransaction(this.tronWeb, ContractType.CreateSmartContract, contract, options.permissionId, {
             fee_limit: args.fee_limit,
-            ...(options.blockHeader || ({} as BlockHeader)),
+            ...(options.blockHeader || (await getHeaderInfo(this.tronWeb.fullNode))),
         })) as CreateSmartContractTransaction;
         tx.contract_address = genContractAddress(args.owner_address, tx.txID);
         return tx;
@@ -1212,7 +1212,7 @@ export class TransactionBuilder {
             options.permissionId,
             {
                 fee_limit: args.fee_limit,
-                ...(options.blockHeader || ({} as BlockHeader)),
+                ...(options.blockHeader || (await getHeaderInfo(this.tronWeb.fullNode))),
             }
         );
         return {
