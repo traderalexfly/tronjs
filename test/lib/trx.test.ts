@@ -546,7 +546,7 @@ describe('TronWeb.trx', function () {
             });
         });
 
-        describe.only('#ecRecover', async function () {
+        describe('#ecRecover', async function () {
             const idx = 14;
             let transaction: SignedTransaction;
 
