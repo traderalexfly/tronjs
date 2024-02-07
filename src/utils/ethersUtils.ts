@@ -46,6 +46,7 @@ export {
     AbiCoder,
     Interface,
     FormatTypes,
+    Signature,
     splitSignature,
     joinSignature,
     arrayify,
